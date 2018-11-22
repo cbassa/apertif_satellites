@@ -13,6 +13,7 @@ try:
 except ImportError:
     from urllib import urlopen
 
+
 class two_line_element:
     """TLE class"""
 
@@ -22,7 +23,7 @@ class two_line_element:
         self.tle0 = tle0.decode("utf-8").strip()
         self.tle1 = tle1.decode("utf-8")
         self.tle2 = tle2.decode("utf-8")
-        if self.tle0[:2]=="0 ":
+        if self.tle0[:2] == "0 ":
             self.name = self.tle0[2:].strip()
         else:
             self.name = self.tle0.strip()
@@ -33,22 +34,27 @@ def download_tles(urlstr="https://celestrak.com/NORAD/elements/galileo.txt"):
     """Download two-line elements from the specified url."""
     """Returns a list of two_line_element objects."""
     lines = urlopen(urlstr).readlines()
-    return [two_line_element(lines[i], lines[i+1], lines[i+2]) for i in range(0, len(lines), 3)]
+    return [two_line_element(lines[i], lines[i+1], lines[i+2])
+            for i in range(0, len(lines), 3)]
+
 
 if __name__ == "__main__":
     # Read command line arguments
-    parser = argparse.ArgumentParser(description="Compute Galileo satellite positions for WSRT")
+    parser = argparse.ArgumentParser(
+        description="Compute Galileo satellite positions for WSRT")
     parser.add_argument("-t", "--time",
                         help="Time (YYYY-MM-DD HH:MM:SS) [default: now]",
-                        default=datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S"))
+                        default=datetime.datetime.utcnow().strftime(
+                            "%Y-%m-%dT%H:%M:%S"
+                        ))
     args = parser.parse_args()
 
     # Set start and end times
     tobs = datetime.datetime.strptime(args.time, "%Y-%m-%dT%H:%M:%S")
-    
+
     # Download TLEs
     tles = download_tles()
-    
+
     # Set observer
     observer = ephem.Observer()
     observer.lon = "6.60334"
