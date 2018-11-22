@@ -62,6 +62,7 @@ if __name__ == "__main__":
     observer.elevation = 0
     location = EarthLocation(lat=52.91474*u.deg, lon=6.60334*u.deg, height=0*u.m)
 
+    print("Satellites are The Worst")
     print("Positions of Galileo satellites as seen by WSRT at", tobs)
     print("\n==================================================\n")
     print("Satellite          | R.A.         |  Decl.       |  Alt. (deg)")
